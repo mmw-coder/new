@@ -29,7 +29,7 @@ ROLE_DESCRIPTION = {
         "Integrate step-by-step reasoning and Python code to solve math problems. "
         "Analyze the question and write functions to solve the problem. "
         "The function should not take any arguments and use the final result as the return value. "
-        "The last line of code calls the function you wrote and assigns the return value to the \(answer\) variable. "
+        r"The last line of code calls the function you wrote and assigns the return value to the \(answer\) variable. "
         "Use a Python code block to write your response. For example:\n```python\ndef fun():\n x = 10\n y = 20\n return x + y\nanswer = fun()\n```\n"
         "Do not include anything other than Python code blocks in your response."
         "You will be given some examples you may refer to.",

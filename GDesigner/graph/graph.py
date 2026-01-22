@@ -1006,6 +1006,35 @@ class Graph(ABC):
         new_graph.routing_transformer.eval()
         return new_graph
 
+    def load_weights(self, path):
+        """
+        Loads weights from a checkpoint into the current graph instance.
+        """
+        print(f"Loading weights from {path}...")
+        model_state = torch.load(path, map_location=torch.device('cpu'))
+        
+        # Load transformer components if present
+        if 'routing_transformer' in model_state:
+            self.routing_transformer.load_state_dict(model_state['routing_transformer'])
+            self.proj_to_transformer_dim_history.load_state_dict(model_state['proj_to_transformer_dim_history'])
+            self.proj_to_transformer_dim_task.load_state_dict(model_state['proj_to_transformer_dim_task'])
+            self.proj_to_transformer_dim_role.load_state_dict(model_state['proj_to_transformer_dim_role'])
+            
+            if 'linear_imp' in model_state:
+                self.linear_imp.load_state_dict(model_state['linear_imp'])
+            if 'linear_gap' in model_state:
+                self.linear_gap.load_state_dict(model_state['linear_gap'])
+            if 'ncs_mlp' in model_state:
+                self.ncs_mlp.load_state_dict(model_state['ncs_mlp'])
+        
+        # Load role embeddings
+        if 'role_embeddings' in model_state:
+            for role, embedding in model_state['role_embeddings'].items():
+                if role in self.role_embeddings:
+                    self.role_embeddings[role] = embedding
+                    
+        print("Weights loaded successfully.")
+
     @staticmethod
     def load_model(path):
         """

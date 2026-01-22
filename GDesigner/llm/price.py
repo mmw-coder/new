@@ -6,7 +6,10 @@ import tiktoken
 
 def cal_token(model:str, text:str):
     try:
-        encoder = tiktoken.encoding_for_model(model)
+        if "qwen" in model.lower():
+            encoder = tiktoken.get_encoding("cl100k_base")
+        else:
+            encoder = tiktoken.encoding_for_model(model)
     except KeyError:
         # Use a default encoding for models not recognized by tiktoken
         encoder = tiktoken.get_encoding("cl100k_base")  # This is the encoding used by GPT-4 and many other models
